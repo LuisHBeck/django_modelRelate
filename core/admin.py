@@ -13,4 +13,10 @@ class ChassisAdmin(admin.ModelAdmin):
 
 @admin.register(Car)
 class CarAdmin(admin.ModelAdmin):
-    list_display = ['model','price', 'chassis']
+    list_display = ['manufacturer', 'model','price', 'chassis', 'get_drivers']
+    
+    # To show Many to Many fields on admin page
+    def get_drivers(self, obj):
+        return ', '.join([d.username for d in obj.driver.all()])
+    
+    get_drivers.short_description = 'Drivers'

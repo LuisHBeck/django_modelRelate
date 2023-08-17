@@ -22,6 +22,10 @@ class Automaker(models.Model):
 
     def __str__(self) -> str:
         return self.name
+    
+# Automaker
+def set_default_automaker():
+    return Automaker.objects.get_or_create(name='Standard')[0]
 
 
 class Car(models.Model):
@@ -36,7 +40,7 @@ class Car(models.Model):
         Car can be driven by several drivers and a driver can drive several cars
     """
     chassis = models.OneToOneField(Chassis, on_delete=models.CASCADE)
-    manufacturer = models.ForeignKey(Automaker, on_delete=models.CASCADE)
+    manufacturer = models.ForeignKey(Automaker, on_delete=models.SET(set_default_automaker))
     driver = models.ManyToManyField(get_user_model())
     model = models.CharField(max_length=30, help_text='Max 30 character')
     price = models.DecimalField(max_digits=8, decimal_places=2)
