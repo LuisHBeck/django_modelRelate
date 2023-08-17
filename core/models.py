@@ -1,5 +1,7 @@
 from django.db import models
 
+from django.contrib.auth import get_user_model
+
 class Chassis(models.Model):
     number = models.CharField(max_length=16, help_text='Max 16 digits')
     
@@ -29,9 +31,13 @@ class Car(models.Model):
 
     #ForeignKey (One to Many)
         Car can only relate to one automaker but an automaker can relate to several cars
+        
+    #Many to Many -     
+        Car can be driven by several drivers and a driver can drive several cars
     """
     chassis = models.OneToOneField(Chassis, on_delete=models.CASCADE)
     manufacturer = models.ForeignKey(Automaker, on_delete=models.CASCADE)
+    driver = models.ManyToManyField(get_user_model())
     model = models.CharField(max_length=30, help_text='Max 30 character')
     price = models.DecimalField(max_digits=8, decimal_places=2)
     
